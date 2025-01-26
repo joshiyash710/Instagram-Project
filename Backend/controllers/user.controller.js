@@ -1,4 +1,4 @@
-import User from '../models/user.model.js'
+import {User} from '../models/user.model.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import getDataUri from '../utils/getDataUri.js'
@@ -92,7 +92,7 @@ export const logout = async (req,res) => {
 
 export const getProfile = async (req,res) => {
     try {
-        const userId = req.params._id
+        const userId = req.params.id
         let user = await User.findById(userId)
         return res.status(200).json({
             user,
@@ -104,7 +104,7 @@ export const getProfile = async (req,res) => {
     }
 }
 
-export const editPrfile = async (req,res) => {
+export const editProfile = async (req,res) => {
     try {
         // const      
         const userId = req.id

@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     gender : {
         type : String,
-        enum : ['Male','Female'],
-        required : true
+        enum : ['Male','Female']
     },
     followers : [
         {
@@ -48,7 +47,7 @@ const userSchema = new mongoose.Schema({
     ],
     bookmarks : [
         {
-            type : mongoose.Schema.Types.ObjecyId,
+            type : mongoose.Schema.Types.ObjectId,
             ref : 'Post'
         }
     ]
