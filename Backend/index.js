@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import connectDB from './utils/db.js'
 import userRoute from './routes/user.route.js'
+import postRoute from './routes/post.route.js'
 dotenv.config()
 const app = express()
 app.get('/',(req,res)=>{
@@ -23,6 +24,7 @@ app.use(cors(corsOption))
 // APIs
 
 app.use("/api/v1/user",userRoute)
+app.use("/api/v1/post",postRoute)
 const port = process.env.PORT || 3000
 app.listen(port,()=>{
     connectDB()
