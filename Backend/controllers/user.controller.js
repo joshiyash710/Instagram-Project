@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import getDataUri from '../utils/getDataUri.js'
 import cloudinary from '../utils/cloudinary.js'
+import { Post } from '../models/post.model.js'
 export const register = async (req, res) => {
     try {
         const { username, email, password } = req.body
@@ -58,6 +59,17 @@ export const login = async (req, res) => {
                 success: false
             })
         }
+        const token = await jwt.sign({userId : user._id},process.env.JWT_SECRET,{expiresIn : '1d'})
+        //populate each postId in posts array 
+        const populatedPosts = await Promise.all(
+            user.posts.map(async (postId) => {
+                const post = await Post.findById(postId)
+                if(post.author.equals(user._id)){
+                    return post
+                }
+                return null
+            })
+        )
         user = {
             _id: user._id,
             username : user.username,
@@ -66,9 +78,9 @@ export const login = async (req, res) => {
             bio : user.bio,
             followers : user.followers,
             following : user.following,
-            posts : user.posts
+            posts : populatedPosts
         }
-        const token = await jwt.sign({userId : user._id},process.env.JWT_SECRET,{expiresIn : '1d'})
+       
         return res.cookie('token',token,{httpOnly : true , sameSite : 'strict',maxAge : 1*24*60*60*1000}).json({
             message : `Welcome back ${user.username} !!!`,
             user,
