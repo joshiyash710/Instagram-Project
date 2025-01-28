@@ -6,7 +6,7 @@ import axios from 'axios'
 import { toast } from 'sonner'
 import { Link } from 'react-router-dom'
 
-const Signup = () => {
+const Login = () => {
     const [input,setInput] = useState({
         username : "",
         email : "",
@@ -16,13 +16,13 @@ const Signup = () => {
     const changeEventHandler = (e) => {
         setInput({...input,[e.target.name] : e.target.value})
     }
-    const signupHandler = async (e) => {
+    const loginHandler = async (e) => {
         e.preventDefault()
         console.log(input);
         
         try {
             setLoading(true)
-           const res = await axios.post('http://localhost:8000/api/v1/user/register',input,{
+           const res = await axios.post('http://localhost:8000/api/v1/user/login',input,{
             headers : {
                 'Content-Type' : 'application/json',
             },
@@ -41,7 +41,6 @@ const Signup = () => {
             console.log(error);
             toast.error(error.response.data.message)
             setInput({
-                username : "",
                 email : "",
                 password : ""
             })
@@ -52,21 +51,10 @@ const Signup = () => {
     }
     return (
         <div className='flex items-center w-screen h-screen justify-center'>
-            <form onSubmit={signupHandler} className='shadow-lg flex flex-col gap-5 p-8'>
+            <form onSubmit={loginHandler} className='shadow-lg flex flex-col gap-5 p-8'>
                 <div className='my-4'>
                         <h1 className='text-center font-bold text-xl'>Logo</h1>
                         <p className='text-center text-sm'>Signup to see the photos and videos from your friend</p>
-                </div>
-                <div>
-                    <Label className="py-2 font-bold">Username</Label>
-                    <Input
-                        type="text"
-                        name="username"
-                        value = {input.username}
-                        onChange = {changeEventHandler}
-                        placeholder="Enter your username"
-                        className="focus-visible:ring-transparent"
-                    />
                 </div>
                 <div>
                     <Label className="py-2 font-bold">Email</Label>
@@ -90,11 +78,11 @@ const Signup = () => {
                         className="focus-visible:ring-transparent"
                     />
                 </div>
-                <Button variant = "outline" type = "submit">Signup</Button>
-                <span>Already have an account ? <Link className='text-blue-600' to='/login'>Login</Link></span>
+                <Button variant = "outline" type = "submit">Login</Button>
+                <span>Don't have an account ? <Link to='/signup' className='text-blue-600'>Signup</Link></span>
             </form>
         </div>
     )
 }
 
-export default Signup
+export default Login
