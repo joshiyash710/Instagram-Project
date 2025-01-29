@@ -14,7 +14,8 @@ export const addNewPost = async (req,res) => {
             })
         }
 
-        const optimizedImageBuffer = await sharp(image.buffer).resize({width : 800,height : 800,fit:'inside'})
+        const optimizedImageBuffer = await sharp(image.buffer)
+        .resize({width : 800,height : 800,fit:'inside'})
         .toFormat('jpeg',{quality : 80})
         .toBuffer()
 
@@ -24,7 +25,7 @@ export const addNewPost = async (req,res) => {
         const post = await Post.create({
             caption,
             image : cloudResponse.secure_url,
-            authorId : authorId
+            author : authorId
         })
         const user = await User.findById(authorId)
         if(user){

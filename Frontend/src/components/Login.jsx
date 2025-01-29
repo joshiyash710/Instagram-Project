@@ -23,7 +23,7 @@ const Login = () => {
     }
     const loginHandler = async (e) => {
         e.preventDefault()
-        console.log(input);
+    
 
         try {
             setLoading(true)
@@ -33,7 +33,8 @@ const Login = () => {
                 },
                 withCredentials: true
             })
-
+            console.log(res.data);
+            
             if (res.data.success) {
                 dispatch(setAuthUser(res.data.user))
                 navigate('/')
