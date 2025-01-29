@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const postSlice = createSlice({
     name : 'post',
     initialState : {
-        posts : []
+        posts : [],
     },
     reducers : {
         setPosts : (state,action) => {
