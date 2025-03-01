@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     username : {
         type : String,
@@ -17,40 +16,40 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture : {
         type : String,
-        default : ''
-    },
-    bio : {
-        type : String,
-        default : ''
+        default : "",
     },
     gender : {
         type : String,
-        enum : ['Male','Female']
+        enum : ["Male","Female"]
+    },
+    bio : {
+        type : String,
+        default : ""
     },
     followers : [
         {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'User'
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "User"
         }
     ],
     following : [
         {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'User'
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "User"
         }
     ],
     posts : [
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'Post'
+            ref : "Post"
         }
     ],
     bookmarks : [
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'Post'
+            ref : "Post"
         }
     ]
 },{timestamps:true})
 
-export const User = mongoose.model('User',userSchema)
+export const User = mongoose.model("User",userSchema)
