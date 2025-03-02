@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import connectDB from './utils/db.js'
 import userRouter from './routes/user.route.js'
-
+import postRouter from './routes/post.route.js'
 const app = express()
 dotenv.config({})
 app.get('/',(_,res)=>{
@@ -22,6 +22,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use('/api/v1/user',userRouter)
+app.use('/api/v1/post',postRouter)
 app.listen(process.env.PORT,()=>{
     connectDB()
     console.log(`Server is running on port ${process.env.PORT}`);
