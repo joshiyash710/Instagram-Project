@@ -1,8 +1,8 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
-import getDataUri from "../utils/datauri";
-import cloudinary from "../utils/cloudinary";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 export const register = async (req,res) => {
     try {
         const {username,email,password} = req.body
@@ -49,7 +49,7 @@ export const login = async (req,res) => {
             success : false
         })
     }
-    const isPasswordCorrect = await bcrypt.compare(password,User.password)
+    const isPasswordCorrect = await bcrypt.compare(password,user.password)
     if(!isPasswordCorrect){
         return res.status(401).json({
             message : "Incorrect email or password !!!",
@@ -108,7 +108,7 @@ export const editProfile = async (req,res) => {
             const fileUri = getDataUri(profilePicture)
             cloudResponse = await cloudinary.uploader.upload(fileUri)
         }
-        const user = await User.findById(userId)
+        const user = await User.findById(userId).select("-password")
         if(!user){
             return res.status(404).json({
                 message : 'User not found !!!',
@@ -116,7 +116,7 @@ export const editProfile = async (req,res) => {
             })
         }
         if(bio) user.bio = bio
-        if(gender) user.bio = bio
+        if(gender) user.gender = gender
         if(profilePicture) user.profilePicture = cloudResponse.secure_url
         await user.save()
         return res.status(200).json({
@@ -124,6 +124,71 @@ export const editProfile = async (req,res) => {
             success : true,
             user
         })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getSuggestedUsers = async (req,res) => {
+    try {
+        const suggestedUsers = await User.find({_id : {$ne : req.id}}).select("-password")
+        if(!suggestedUsers){
+            return res.status(400).json({
+                message : 'Currently do not have any users !!!',
+                successs : false
+            })
+        }
+        return res.status(200).json({
+            success : true,
+            users : suggestedUsers
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const followOrUnfllow = async (req,res) => {
+    try {
+        const followingUser = req.id
+        const followedUser = req.params.id
+        if(followingUser === followedUser){
+            return res.status(400).json({
+                message : 'You cannot follow or unfollow yourself !!!',
+                success : false
+            })
+        }
+        const user = await User.findById(followingUser)
+        const targetUser = await User.findById(followedUser)
+        if(!user || !targetUser){
+            return res.status(400).json({
+                message : "User not found !!!",
+                success : false
+            })
+        }
+        const isFollowing = user.following.includes(followedUser)
+        if(isFollowing){
+            //unfollow logic
+            await Promise.all([
+                User.updateOne({_id : followingUser},{$pull : {following : followedUser}}),
+                User.updateOne({_id : followedUser},{$pull : {followers : followingUser}})
+            ])
+            return res.status(200).json({
+                message : `Unfollowed ${followedUser.username} successfully !!!`,
+                success : true
+            })
+        }
+        else{
+            //follow logic
+            // here promise is used to handle both user as well as targetUser together
+            await Promise.all([
+                User.updateOne({_id : followingUser},{$push : {following : followedUser}}),
+                User.updateOne({_id : followedUser},{$push : {followers : followingUser}})
+            ])
+            return res.status(200).json({
+                message : `Followed ${followedUser.username} successfully !!!`,
+                success : true
+            })
+        }
     } catch (error) {
         console.log(error);
     }
