@@ -5,7 +5,7 @@ import { addComment, addNewPost, bookmarkPost, deletePost, dislikePost, getAllPo
 const router = express.Router()
 router.route('/addpost').post(isAuthenticated,upload.single('image'),addNewPost)
 router.route('/all').get(isAuthenticated,getAllPosts)
-router.route('/logout').get(logout)
+router.route('/userpost/all').get(getUserPosts)
 router.route('/:id/like').get(isAuthenticated,likePosts)
 router.route('/:id/dislike').post(isAuthenticated,dislikePost)
 router.route('/:id/comment').get(isAuthenticated,addComment)
