@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { Bookmark, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
@@ -9,6 +9,17 @@ import CommentDialog from './CommentDialog'
 
 
 const Post = () => {
+    const [text,setText] = useState("")
+    const [open,setOpen] = useState(false)
+    const changeEventHandler = (e) => {
+        const inputText = e.target.value
+        if(inputText.trim()){
+            setText(inputText)
+        }
+        else{
+            setText("")
+        }
+    }
     return (
         <div className='my-8 w-full max-w-sm mx-auto'>
             <div className='flex items-center justify-between gap-3'>
@@ -36,7 +47,7 @@ const Post = () => {
                 <div className='flex items-center justify-between my-2'>
                     <div className='flex items-center gap-3'>
                         <FaRegHeart size={'22px'}className='cursor-pointer' />
-                        <MessageCircle className='cursor-pointer hover:text-gray-600' />
+                        <MessageCircle onClick={()=>setOpen(true)} className='cursor-pointer hover:text-gray-600' />
                         <Send className='cursor-pointer hover:text-gray-600' />
                     </div>
                     <Bookmark className='cursor-pointer hover:text-gray-600'/>
@@ -46,14 +57,19 @@ const Post = () => {
                     <span className='font-medium mr-2'>username</span>
                     caption
                 </p>
-                <span>View all 10 comments</span>
-                <CommentDialog/>
-                <div>
+                <span onClick={() => setOpen(true)} className='cursor-pointer text-gray-400'>View all 10 comments</span>
+                <CommentDialog open={open} setOpen={setOpen}/>
+                <div className='flex items-center justify-between'>
                     <input type="text"
                     placeholder='Add a comment...'
+                    value={text}
+                    onChange={changeEventHandler}
                     className='outline-none text-sm w-full'
                     />
-                    <span className='text-[#3BADF8]'>Post</span>
+                    {
+                        text &&  <span className='text-[#3BADF8]'>Send</span>
+                    }
+                   
                 </div>
             </div>
     )
