@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InstagramLogo from '../Instagram-Logo-No-Background.png'; 
 
 import { Label } from './ui/label'
@@ -12,7 +12,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [input,setInput] = useState({
-    username : "",
     email : "",
     password : ""
   })
