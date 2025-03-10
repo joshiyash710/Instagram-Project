@@ -43,7 +43,7 @@ const Post = () => {
             </div>
             <img
                 className='rounded-sm my-2 w-full aspect-square object-cover'
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLQimBK-OEyWbnutukAqWwht7Q7nZL8NSBqw&s" alt="" />
+                src="https://i.redd.it/could-young-kratos-have-potentially-easily-beaten-thor-v0-ztiio7o52n4d1.jpg?width=1170&format=pjpg&auto=webp&s=45007b13e2994b8256c17eba4616283be0f92712" alt="" />
                 <div className='flex items-center justify-between my-2'>
                     <div className='flex items-center gap-3'>
                         <FaRegHeart size={'22px'}className='cursor-pointer' />
@@ -67,7 +67,7 @@ const Post = () => {
                     className='outline-none text-sm w-full'
                     />
                     {
-                        text &&  <span className='text-[#3BADF8]'>Send</span>
+                        text &&  <span className='text-[#3BADF8] cursor-pointer'>Send</span>
                     }
                    
                 </div>
