@@ -28,7 +28,7 @@ const CreatePost = ({ open, setOpen }) => {
        
         const formData = new FormData()
         formData.append("caption", caption)
-        if (imagePreview) formData.append("iamge", file)
+        if (imagePreview) formData.append("image", file)
         try {
             setLoading(true)
             const res = await axios.post('http://localhost:8000/api/v1/post/addpost', formData, {
