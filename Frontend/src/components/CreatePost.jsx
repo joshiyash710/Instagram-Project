@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Textarea } from './ui/textarea'
 import { Button } from './ui/button'
 import { readFileAsDataURL } from '@/lib/utils'
@@ -10,7 +10,9 @@ import axios from 'axios'
 import { toast } from 'sonner'
 
 const CreatePost = ({ open, setOpen }) => {
+    const dispatch = useDispatch()
     const { user } = useSelector(store => store.auth)
+    const {posts} = useSelector(store=>store.post)
     const imageRef = useRef()
     const [file, setFile] = useState("")
     const [caption, setCaption] = useState("")
@@ -38,10 +40,12 @@ const CreatePost = ({ open, setOpen }) => {
                 withCredentials: true
             })
             if (res.data.success) {
+                dispatch([res.data.post,...posts])
                 toast.success(res.data.message)
+                setOpen(false)
             }
         } catch (error) {
-            toast.error(error.resposnse.data.message)
+            toast.error(error.response.data.message)
         }
         finally {
             setLoading(false)
