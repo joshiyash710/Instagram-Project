@@ -126,7 +126,7 @@ export const dislikePost = async (req,res) => {
      await post.save()
  
      return res.status(200).json({
-         message : 'Post disliked',
+         message : 'Post disliked !!!',
          success : true
      })
    } catch (error) {

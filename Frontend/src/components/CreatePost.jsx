@@ -8,6 +8,7 @@ import { readFileAsDataURL } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import axios from 'axios'
 import { toast } from 'sonner'
+import { setPosts } from '@/redux/postSlice'
 
 const CreatePost = ({ open, setOpen }) => {
     const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const CreatePost = ({ open, setOpen }) => {
                 withCredentials: true
             })
             if (res.data.success) {
-                dispatch([res.data.post,...posts])
+                dispatch(setPosts([res.data.post, ...posts]))
                 toast.success(res.data.message)
                 setOpen(false)
             }
